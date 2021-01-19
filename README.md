@@ -42,6 +42,29 @@ func max(count int, count2 int) int {
 }
 ```
 
+* 495_提莫攻击
+```go
+func findPoisonedDuration(nums []int, duration int) int {
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+
+	total := 0
+	for i := 0; i < n-1; i++ {
+		diff := nums[i+1] - nums[i]
+		total += min(diff, duration)
+	}
+	return total + duration
+}
+
+func min(a int, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+```
 ### 链表
 
 
