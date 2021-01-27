@@ -208,6 +208,41 @@ func findErrorNums2(nums []int) []int {
 	return []int{result[0], result[1]}
 }
 ```
+
+* 697_数组的度
+>  其实这道算法题，是求最大度（出现次数最多的数字），第一个出现的数字到最后一个出现的数字，中间相隔最少数字,
+>eg: {1, 2, 2, 3, 1, 4, 2},出现数字最多的数字是2，出现了3次（其实就是度），那么从第一个2到最后一个2，
+>组成的新的子数组为 {2，2，3，1，4，2}，长度为 6
+>
+>假如数组变为 {1, 2, 2, 3, 1, 4, 2, 1},数字次数出现最多的数字是1和2，都出现了3次，第一个1到最后一个1，长度为8，
+>第一个2到最后一个2，长度为 6，那么组成最短子数组的是 {2，2，3，1，4，2}，长度为 6
+```go
+func findShortestSubArray(nums []int) int {
+	if len(nums) < 2 {
+		return len(nums)
+	}
+	count := len(nums) // 计数
+	degree := 1        // 数组的度
+	degreeArray := make(map[int]int) // 数组中每个元素出现的频数
+	degreeIndex := make(map[int]int) // 数组中频数第一次出现的下标
+	for i, num := range nums {
+		degreeArray[num]++
+		if degreeArray[num] == 1 {
+			degreeIndex[num] = i
+		} else {
+			l := i - degreeIndex[num] + 1
+			if degree < degreeArray[num] || (degree == degreeArray[num] && count > l) {
+				degree = degreeArray[num]
+				count = l
+			}
+		}
+	}
+	if len(degreeArray) == len(nums) {
+		return 1
+	}
+	return count
+}
+```
 ### 链表
 
 
