@@ -243,6 +243,73 @@ func findShortestSubArray(nums []int) int {
 	return count
 }
 ```
+
+* 448_找到所有数组中消失的数字
+```go
+func findDisappearedNumbers(nums []int) []int {
+	m := make(map[int]bool)
+
+	for _, n := range nums {
+		m[n] = true
+	}
+	result := []int{}
+
+	for i := 1; i <= len(nums); i++ {
+		if _, ok := m[i]; !ok {
+			result = append(result, i)
+		}
+	}
+	return result
+}
+
+```
+* 442_数组中重复的数据
+```go
+// 多么适合用哈希表的题...
+// 可惜不能使用额外空间，复杂度 O(N)，可能要求在数组原地操作、一次遍历解决
+// 解法和下方的 448 很像，充分利用 1~n 的已知条件，十分巧妙
+func findDuplicates(nums []int) []int {
+	var dups []int
+	for _, num := range nums {
+		if num < 0 {
+			num = -num
+		}
+
+		n := num - 1
+		if nums[n] < 0 { // 指向的位置以为负值，则重复
+			dups = append(dups, num)
+			continue
+		}
+		nums[n] = -nums[n]
+	}
+	return dups
+}
+```
+* 41_缺失的第一个正数
+```go
+func firstMissingPositive(nums []int) int {
+	n := len(nums)
+	for i := 0; i < n; i++ {
+		if nums[i] < 0 {
+			nums[i] = n + 1
+		}
+	}
+
+	for i := 0; i < n; i++ {
+		num := abs(nums[i])
+		if num <= n {
+			nums[num - 1] = -abs(nums[num - 1])
+		}
+	}
+	for i := 0; i < n; i++ {
+		if nums[i] > 0 {
+			return i + 1
+		}
+	}
+	return n + 1
+}
+```
+
 ### 链表
 
 
