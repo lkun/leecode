@@ -309,6 +309,40 @@ func firstMissingPositive(nums []int) int {
 	return n + 1
 }
 ```
+* 453_最小操作次数使数组元素相等
+```go
+func minMoves(nums []int) int {
+	moves := 0
+	min := math.MaxInt64
+	for n := 0; n < len(nums); n++ {
+		min = Min(min, nums[n])
+	}
+
+	for n := 0; n < len(nums); n++ {
+		moves = moves + nums[n] - min
+	}
+	return moves
+}
+
+解法2
+先找出数组中的最小值
+然后让数组中的每一个值减去最小值,代表着这个数要移动的次数
+然后把所有次数累加求和即是结果
+
+func minMoves(nums []int) int {
+	min := math.MaxInt64
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+	}
+	count := 0
+	for _, num := range nums {
+		count = count + num - min
+	}
+	return count
+}
+```
 
 ### 链表
 
